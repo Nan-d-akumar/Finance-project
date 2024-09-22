@@ -1,0 +1,95 @@
+{% extends 'mainapp/basic.html' %}
+{% block title %}Stock Tracker{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Selected Stock Details</h1>
+
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th>Stock</th>
+                <th>Price</th>
+                <th>Open</th>
+                <th>Change</th>
+                <th>Market Cap</th>
+                <th>Volume</th>
+            </tr>
+        </thead>
+        <tbody id="stock-table-body">
+            {% for stock, details in data.items %}
+            <tr>
+                <td>{{ stock }}</td>
+                <td id="price-{{ stock }}">{{ details.price }}</td>
+                <td id="open-{{ stock }}">{{ details.open }}</td>
+                <td id="change-{{ stock }}">{{ details.change }}</td>
+                <td id="market-cap-{{ stock }}">{{ details.market_cap }}</td>
+                <td id="volume-{{ stock }}">{{ details.volume }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Latest News</h2>
+    <div id="news-container" class="row">
+        <!-- News articles will be added here by JavaScript -->
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+// Function to update stock data
+function updateStockData() {
+    const stockpicker = {{ stockpicker|safe }};  // Stock list from server
+
+    fetch(`/fetch_stock_data/?stockpicker=` + stockpicker.join('&stockpicker='))
+        .then(response => response.json())
+        .then(data => {
+            // Update each stock row
+            for (const stock in data.data) {
+                document.getElementById(`price-${stock}`).textContent = data.data[stock].price;
+                document.getElementById(`open-${stock}`).textContent = data.data[stock].open;
+                document.getElementById(`change-${stock}`).textContent = data.data[stock].change;
+                document.getElementById(`market-cap-${stock}`).textContent = data.data[stock].market_cap;
+                document.getElementById(`volume-${stock}`).textContent = data.data[stock].volume;
+            }
+
+            // Update news articles
+            const newsContainer = document.getElementById('news-container');
+            newsContainer.innerHTML = '';  // Clear previous news articles
+
+            for (const stock in data.news) {
+                const articles = data.news[stock];
+                const cardContainer = document.createElement('div');
+                cardContainer.classList.add('col-md-4');
+
+                const card = document.createElement('div');
+                card.classList.add('card', 'mb-4');
+
+                const cardHeader = document.createElement('div');
+                cardHeader.classList.add('card-header');
+                cardHeader.innerHTML = `<h5 class="card-title">${stock} News</h5>`;
+                card.appendChild(cardHeader);
+
+                const cardBody = document.createElement('ul');
+                cardBody.classList.add('list-group', 'list-group-flush');
+
+                articles.forEach(article => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('list-group-item');
+                    listItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
+                    cardBody.appendChild(listItem);
+                });
+
+                card.appendChild(cardBody);
+                cardContainer.appendChild(card);
+                newsContainer.appendChild(cardContainer);
+            }
+        });
+}
+
+// Call updateStockData every 8 seconds
+setInterval(updateStockData, 8000);
+</script>
+{% endblock %}

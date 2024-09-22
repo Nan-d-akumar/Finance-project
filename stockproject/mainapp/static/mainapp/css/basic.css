@@ -1,0 +1,73 @@
+/* Basic reset to remove margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styles for dark mode */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;  /* Dark background for dark mode */
+    color: #ffffff;  /* Light text for dark mode */
+    padding: 20px;
+}
+
+/* Centering navbar */
+/* Custom navbar styles */
+.navbar {
+    background-color: #000000; /* Set navbar background color to black */
+}
+
+.navbar .nav-link, .navbar .navbar-brand {
+    color: #ffffff; /* Set the text color to white */
+}
+
+.navbar .nav-link:hover, .navbar .navbar-brand:hover {
+    color: #0d8cf3; /* Lighten text color on hover */
+}
+
+
+.nav-link:hover {
+    color: #cccccc;  /* Light gray on hover */
+}
+
+.navbar-toggler {
+    border-color: #ffffff;  /* White border for the toggle button */
+}
+
+.navbar-toggler-icon {
+    background-color: #ffffff;  /* White toggle icon */
+}
+
+/* Additional styling for dark mode */
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff;
+}
+
+a {
+    color: #1e90ff;  /* Light blue links */
+}
+
+a:hover {
+    color: #63a4ff;  /* Brighter blue on hover */
+}
+
+/* Style block elements with some padding */
+p, div, section {
+    padding: 10px;
+}
+
+/* Customize button styles for dark mode */
+.btn {
+    background-color: #1e90ff;  /* Light blue buttons */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #63a4ff;  /* Brighter blue on hover */
+}
